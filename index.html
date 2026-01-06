@@ -18,7 +18,6 @@ body {
   font-family: 'Cormorant', serif;
   color: #111;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 /* SPLASH */
@@ -29,7 +28,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 100;
   animation: splashOut 2.4s ease forwards;
 }
 .splash h1 {
@@ -39,9 +38,7 @@ body {
   opacity: 0;
   animation: splashIn 1.2s ease forwards;
 }
-@keyframes splashIn {
-  to { opacity: 1; }
-}
+@keyframes splashIn { to { opacity: 1; } }
 @keyframes splashOut {
   0%,70% { opacity: 1; }
   100% { opacity: 0; pointer-events: none; }
@@ -54,7 +51,7 @@ header {
   padding: 36px 20px 10px;
 }
 .hello {
-  font-size: 16px;
+  font-size: 15px;
   color: #666;
 }
 .brand {
@@ -74,8 +71,7 @@ header {
   padding: 18px 20px;
   border-radius: 18px;
   border: none;
-  font-family: inherit;
-  font-size: 17px;
+  font-size: 16px;
   background: #fff;
   outline: none;
   box-shadow: 0 14px 36px rgba(0,0,0,0.14);
@@ -88,8 +84,7 @@ main {
   padding: 20px;
 }
 .card {
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.9);
   border-radius: 24px;
   margin-bottom: 42px;
   overflow: hidden;
@@ -129,7 +124,7 @@ main {
   position: fixed;
   inset: 0;
   background: #eceded;
-  z-index: 20;
+  z-index: 200;
   opacity: 0;
   pointer-events: none;
   transition: opacity .4s ease;
@@ -143,20 +138,22 @@ main {
 .modal.closing {
   opacity: 0;
 }
+
 .modal-image {
   height: 46vh;
   background-size: cover;
   background-position: center;
-  transform: scale(1.04);
+  transform: scale(1.05);
   transition: transform .6s ease;
 }
 .modal.show .modal-image {
   transform: scale(1);
 }
+
 .modal-content {
   max-width: 720px;
   margin: auto;
-  padding: 32px 22px 100px;
+  padding: 32px 22px 120px;
   opacity: 0;
   transform: translateY(40px);
   transition: opacity .45s ease, transform .45s ease;
@@ -178,9 +175,9 @@ main {
   line-height: 1.75;
 }
 
-/* CLOSE */
+/* CLOSE BUTTON — WILL NOT DISAPPEAR */
 .close {
-  position: fixed;
+  position: absolute;
   top: env(safe-area-inset-top, 16px);
   right: 16px;
   width: 54px;
@@ -191,19 +188,16 @@ main {
   color: #fff;
   font-size: 24px;
   cursor: pointer;
-  transition: transform .25s ease, background .25s ease, opacity .25s ease;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: auto;
+  transition: transform .25s ease, opacity .25s ease;
 }
 .close:active {
   transform: scale(0.9) rotate(-6deg);
-  opacity: 0.8;
 }
 .modal.closing .close {
   opacity: 0;
-}
-.modal.show .close {
-  opacity: 1;
-  pointer-events: auto;
-  transform: none;
 }
 
 /* MOBILE */
@@ -247,9 +241,8 @@ if ('serviceWorker' in navigator) {
 
 /* NAME */
 let name = localStorage.getItem('name');
-if (!name || name === 'null' || name === 'undefined') {
-  const input = prompt('Your name');
-  name = input && input.trim() ? input.trim() : 'friend';
+if (!name) {
+  name = prompt('Your name')?.trim() || 'friend';
   localStorage.setItem('name', name);
 }
 document.getElementById('hello').textContent = `Hello, ${name}`;
@@ -272,7 +265,6 @@ const articles = [
   }
 ];
 
-/* ELEMENTS */
 const container = document.getElementById('articles');
 const modal = document.getElementById('modal');
 const modalImage = document.getElementById('modalImage');
