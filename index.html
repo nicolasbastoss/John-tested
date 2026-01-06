@@ -14,205 +14,154 @@
 
 body {
   margin: 0;
-  background: #eceded;
+  background: #f7f7f5;
   font-family: 'Cormorant', serif;
   color: #111;
   -webkit-font-smoothing: antialiased;
 }
 
-/* SPLASH */
-.splash {
-  position: fixed;
-  inset: 0;
-  background: #eceded;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  animation: splashOut 2.4s ease forwards;
-}
-.splash h1 {
-  font-size: 70px;
-  font-weight: 500;
-  letter-spacing: -3px;
-  opacity: 0;
-  animation: splashIn 1.2s ease forwards;
-}
-@keyframes splashIn { to { opacity: 1; } }
-@keyframes splashOut {
-  0%,70% { opacity: 1; }
-  100% { opacity: 0; pointer-events: none; }
-}
-
 /* HEADER */
 header {
-  max-width: 900px;
-  margin: auto;
-  padding: 36px 20px 10px;
+  max-width: 680px;
+  margin: 60px auto 40px;
+  padding: 0 20px;
 }
+
 .hello {
-  font-size: 15px;
+  font-size: 14px;
   color: #666;
+  margin-bottom: 8px;
 }
+
 .brand {
-  font-size: 46px;
+  font-size: 44px;
   font-weight: 500;
-  letter-spacing: -3px;
+  letter-spacing: -2px;
 }
 
 /* SEARCH */
 .search {
-  max-width: 900px;
-  margin: 20px auto;
+  max-width: 680px;
+  margin: 0 auto 60px;
   padding: 0 20px;
 }
+
 .search input {
   width: 100%;
-  padding: 18px 20px;
-  border-radius: 18px;
-  border: none;
+  font-family: inherit;
   font-size: 16px;
-  background: #fff;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
   outline: none;
-  box-shadow: 0 14px 36px rgba(0,0,0,0.14);
 }
 
-/* ARTICLES */
+/* ARTICLE LIST */
 main {
-  max-width: 900px;
+  max-width: 680px;
   margin: auto;
-  padding: 20px;
+  padding: 0 20px 120px;
 }
-.card {
-  background: rgba(255,255,255,0.9);
-  border-radius: 24px;
-  margin-bottom: 42px;
-  overflow: hidden;
-  box-shadow: 0 26px 60px rgba(0,0,0,0.14);
+
+.article {
+  margin-bottom: 80px;
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity .6s ease, transform .6s ease;
 }
-.card.show {
-  opacity: 1;
-  transform: translateY(0);
+
+.article img {
+  width: 100%;
+  display: block;
+  margin-bottom: 18px;
 }
-.card-image {
-  height: 260px;
-  background-size: cover;
-  background-position: center;
-}
-.card-body {
-  padding: 28px;
-}
+
 .meta {
   font-size: 13px;
-  color: #777;
+  color: #666;
+  margin-bottom: 6px;
 }
+
 .title {
-  font-size: 34px;
-  margin: 10px 0 14px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 10px;
 }
+
 .excerpt {
-  font-size: 19px;
-  line-height: 1.7;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
 }
 
 /* MODAL */
 .modal {
   position: fixed;
   inset: 0;
-  background: #eceded;
-  z-index: 200;
+  background: #f7f7f5;
+  z-index: 50;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .4s ease;
+  transition: opacity .35s ease;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
+
 .modal.show {
   opacity: 1;
   pointer-events: auto;
 }
-.modal.closing {
-  opacity: 0;
-}
 
-.modal-image {
-  height: 46vh;
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.05);
-  transition: transform .6s ease;
-}
-.modal.show .modal-image {
-  transform: scale(1);
-}
-
-.modal-content {
+.modal-inner {
   max-width: 720px;
-  margin: auto;
-  padding: 32px 22px 120px;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity .45s ease, transform .45s ease;
+  margin: 60px auto 120px;
+  padding: 0 20px;
 }
-.modal.show .modal-content {
-  opacity: 1;
-  transform: translateY(0);
+
+.modal img {
+  width: 100%;
+  margin-bottom: 32px;
 }
-.modal.closing .modal-content {
-  opacity: 0;
-  transform: translateY(20px);
-}
-.modal-content h1 {
+
+.modal h1 {
   font-size: 42px;
-  margin-bottom: 16px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 24px;
 }
-.modal-content p {
+
+.modal p {
   font-size: 20px;
   line-height: 1.75;
 }
 
-/* CLOSE BUTTON — WILL NOT DISAPPEAR */
+/* CLOSE */
 .close {
-  position: absolute;
-  top: env(safe-area-inset-top, 16px);
-  right: 16px;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
+  position: fixed;
+  top: env(safe-area-inset-top, 20px);
+  right: 20px;
+  background: none;
   border: none;
-  background: rgba(0,0,0,0.65);
-  color: #fff;
-  font-size: 24px;
+  font-size: 26px;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 100;
+  opacity: .6;
+  transition: opacity .2s ease;
+}
+
+.close:hover {
   opacity: 1;
-  pointer-events: auto;
-  transition: transform .25s ease, opacity .25s ease;
-}
-.close:active {
-  transform: scale(0.9) rotate(-6deg);
-}
-.modal.closing .close {
-  opacity: 0;
 }
 
 /* MOBILE */
 @media (max-width: 600px) {
-  .brand { font-size: 38px; }
-  .title { font-size: 28px; }
-  .excerpt { font-size: 18px; }
-  .modal-content p { font-size: 19px; }
+  .brand { font-size: 36px; }
+  .title { font-size: 26px; }
+  .modal h1 { font-size: 34px; }
 }
 </style>
 </head>
 
 <body>
-
-<div class="splash"><h1>john</h1></div>
 
 <header>
   <div class="hello" id="hello"></div>
@@ -220,15 +169,15 @@ main {
 </header>
 
 <div class="search">
-  <input type="text" placeholder="Search articles…" id="searchInput">
+  <input type="text" placeholder="Search" id="searchInput">
 </div>
 
 <main id="articles"></main>
 
 <div class="modal" id="modal">
   <button class="close" id="closeBtn">✕</button>
-  <div class="modal-image" id="modalImage"></div>
-  <div class="modal-content">
+  <div class="modal-inner">
+    <img id="modalImage">
     <h1 id="modalTitle"></h1>
     <p id="modalText"></p>
   </div>
@@ -242,7 +191,7 @@ if ('serviceWorker' in navigator) {
 /* NAME */
 let name = localStorage.getItem('name');
 if (!name) {
-  name = prompt('Your name')?.trim() || 'friend';
+  name = prompt('Your name') || 'friend';
   localStorage.setItem('name', name);
 }
 document.getElementById('hello').textContent = `Hello, ${name}`;
@@ -270,40 +219,27 @@ const modal = document.getElementById('modal');
 const modalImage = document.getElementById('modalImage');
 const modalTitle = document.getElementById('modalTitle');
 const modalText = document.getElementById('modalText');
-const closeBtn = document.getElementById('closeBtn');
-const searchInput = document.getElementById('searchInput');
 
-/* OBSERVER */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('show');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.15 });
-
+/* RENDER */
 function render(list) {
   container.innerHTML = '';
   list.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="card-image" style="background-image:url('${a.image}')"></div>
-      <div class="card-body">
-        <div class="meta">${a.meta}</div>
-        <div class="title">${a.title}</div>
-        <div class="excerpt">${a.excerpt}</div>
-      </div>`;
-    card.onclick = () => openModal(a);
-    container.appendChild(card);
-    observer.observe(card);
+    const el = document.createElement('article');
+    el.className = 'article';
+    el.innerHTML = `
+      <img src="${a.image}">
+      <div class="meta">${a.meta}</div>
+      <div class="title">${a.title}</div>
+      <div class="excerpt">${a.excerpt}</div>
+    `;
+    el.onclick = () => openModal(a);
+    container.appendChild(el);
   });
 }
 render(articles);
 
 /* SEARCH */
-searchInput.addEventListener('input', e => {
+document.getElementById('searchInput').addEventListener('input', e => {
   const q = e.target.value.toLowerCase();
   render(articles.filter(a =>
     a.title.toLowerCase().includes(q) ||
@@ -313,19 +249,17 @@ searchInput.addEventListener('input', e => {
 
 /* MODAL */
 function openModal(a) {
-  modalImage.style.backgroundImage = `url('${a.image}')`;
+  modalImage.src = a.image;
   modalTitle.textContent = a.title;
   modalText.textContent = a.content;
-  modal.classList.remove('closing');
   modal.classList.add('show');
 }
 
 function closeModal() {
-  modal.classList.add('closing');
-  setTimeout(() => modal.classList.remove('show','closing'), 400);
+  modal.classList.remove('show');
 }
 
-closeBtn.onclick = closeModal;
+document.getElementById('closeBtn').onclick = closeModal;
 modal.addEventListener('click', e => {
   if (e.target === modal) closeModal();
 });
