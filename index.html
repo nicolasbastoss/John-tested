@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>john</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #eceded;
+  font-family: 'Cormorant', serif;
+  color: #111;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* SPLASH */
+.splash {
+  position: fixed;
+  inset: 0;
+  background: #eceded;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  animation: splashOut 2.4s ease forwards;
+}
+.splash h1 {
+  font-size: 70px;
+  font-weight: 500;
+  letter-spacing: -3px;
+  opacity: 0;
+  animation: splashIn 1.2s ease forwards;
+}
+@keyframes splashIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes splashOut {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+/* HEADER */
+header {
+  max-width: 900px;
+  margin: auto;
+  padding: 36px 20px 10px;
+}
+.hello {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+}
+.brand {
+  font-size: 46px;
+  font-weight: 500;
+  letter-spacing: -3px;
+}
+
+/* SEARCH */
+.search {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+.search input {
+  width: 100%;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: none;
+  font-family: 'Cormorant', serif;
+  font-size: 17px;
+  font-weight: 400;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.14);
+}
+
+/* ARTICLES */
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+.card {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  margin-bottom: 42px;
+  overflow: hidden;
+  box-shadow: 0 26px 60px rgba(0,0,0,0.14);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.card-image {
+  height: 260px;
+  background-size: cover;
+  background-position: center;
+}
+.card-body {
+  padding: 28px;
+}
+.meta {
+  font-size: 13px;
+  font-weight: 400;
+  color: #777;
+}
+.title {
+  font-size: 34px;
+  font-weight: 400;
+  margin: 10px 0 14px;
+}
+.excerpt {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #eceded;
+  z-index: 20;
+  display: none;
+  opacity: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: opacity .35s ease;
+}
+.modal.show {
+  display: block;
+  opacity: 1;
+}
+.modal-image {
+  height: 46vh;
+  background-size: cover;
+  background-position: center;
+}
+.modal-content {
+  max-width: 720px;
+  margin: auto;
+  padding: 32px 22px 100px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.modal.show .modal-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+.modal-content h1 {
+  font-size: 42px;
+  font-weight: 400;
+}
+.modal-content p {
+  font-size: 20px;
+  line-height: 1.75;
+}
+
+/* CLOSE */
+.close {
+  position: fixed;
+  top: env(safe-area-inset-top, 16px);
+  right: 16px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  font-size: 24px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .brand { font-size: 38px; }
+  .title { font-size: 28px; }
+  .excerpt { font-size: 18px; }
+  .modal-content p { font-size: 19px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="splash">
+  <h1>john</h1>
+</div>
+
+<header>
+  <div class="hello" id="hello"></div>
+  <div class="brand">john</div>
+</header>
+
+<div class="search">
+  <input type="text" placeholder="Search articles…" oninput="filterArticles(this.value)">
+</div>
+
+<main id="articles"></main>
+
+<div class="modal" id="modal">
+  <button class="close" onclick="closeModal()">✕</button>
+  <div class="modal-image" id="modalImage"></div>
+  <div class="modal-content">
+    <h1 id="modalTitle"></h1>
+    <p id="modalText"></p>
+  </div>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+
+let name = localStorage.getItem('name');
+
+if (!name || name === 'null' || name === 'undefined') {
+  const input = prompt('Your name');
+  if (input && input.trim()) {
+    name = input.trim();
+    localStorage.setItem('name', name);
+  } else {
+    name = 'friend';
+  }
+}
+
+document.getElementById('hello').textContent = `Hello, ${name}`;
+
+
+const articles = [
+  {
+    title: 'On Silence',
+    meta: 'Reflection · 2 min',
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee',
+    excerpt: 'Silence is not absence.',
+    content: 'Silence is where clarity forms without noise.'
+  },
+  {
+    title: 'Waiting Without Fear',
+    meta: 'Faith · Perspective',
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
+    excerpt: 'Waiting reshapes intention.',
+    content: 'Waiting is alignment, not punishment.'
+  }
+];
+
+const container = document.getElementById('articles');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('show');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+function renderArticles(list) {
+  container.innerHTML = '';
+  list.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-image" style="background-image:url('${a.image}')"></div>
+      <div class="card-body">
+        <div class="meta">${a.meta}</div>
+        <div class="title">${a.title}</div>
+        <div class="excerpt">${a.excerpt}</div>
+      </div>
+    `;
+    card.onclick = () => openModal(a);
+    container.appendChild(card);
+    observer.observe(card);
+  });
+}
+renderArticles(articles);
+
+function filterArticles(q) {
+  q = q.toLowerCase();
+  renderArticles(
+    articles.filter(a =>
+      a.title.toLowerCase().includes(q) ||
+      a.excerpt.toLowerCase().includes(q)
+    )
+  );
+}
+
+function openModal(a) {
+  modalImage.style.backgroundImage = `url('${a.image}')`;
+  modalTitle.textContent = a.title;
+  modalText.textContent = a.content;
+  modal.classList.add('show');
+}
+
+function closeModal() {
+  modal.classList.remove('show');
+}
+</script>
+
+</body>
+</html>
