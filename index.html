@@ -35,60 +35,71 @@ body {
 }
 
 /* HEADER */
+
+
+/* SETTINGS BUTTON */
+/* HEADER */
 header {
-  position: relative;
-  padding: 28px 20px 16px;
-  text-align: center;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+  padding: 14px 20px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .brand {
-  font-size: 34px;
+  font-size: 26px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
 }
 
-/* SETTINGS BUTTON */
-.settings-btn {
+/* MENU BUTTON */
+.menu-btn {
   position: absolute;
   right: 20px;
-  top: 28px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
   color: var(--text);
+  line-height: 1;
 }
 
 /* SETTINGS PANEL */
 .settings {
   max-height: 0;
   overflow: hidden;
-  transition: max-height .4s ease;
+  transition: max-height .35s ease, opacity .25s ease;
+  opacity: 0;
   background: var(--bg);
-  border-top: 1px solid rgba(0,0,0,0.08);
 }
 
 .settings.open {
-  max-height: 200px;
+  max-height: 140px;
+  opacity: 1;
 }
 
 .settings-inner {
   max-width: 700px;
   margin: auto;
-  padding: 20px;
+  padding: 14px 20px 18px;
   display: flex;
-  gap: 20px;
-  justify-content: space-between;
+  gap: 16px;
+  justify-content: flex-end;
 }
 
 .settings button {
-  padding: 10px 14px;
   font-family: inherit;
+  font-size: 14px;
+  padding: 8px 12px;
+  background: none;
   border: 1px solid rgba(0,0,0,0.15);
-  background: transparent;
-  cursor: pointer;
   color: var(--text);
+  cursor: pointer;
 }
 
 /* SEARCH */
@@ -191,7 +202,9 @@ main {
 
 <header>
   <div class="brand">john</div>
-  <button class="settings-btn" onclick="toggleSettings()">☼</button>
+  <button class="menu-btn" onclick="toggleSettings()" aria-label="Settings">
+    ⋮
+  </button>
 </header>
 
 <div class="settings" id="settings">
