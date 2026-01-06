@@ -7,101 +7,145 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
+:root {
+  --bg: #eceded;
+  --text: #111;
+  --muted: #666;
+  --card: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --text: #f1f1f1;
+  --muted: #aaa;
+  --card: #1a1a1a;
+}
+
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: #f7f7f5;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Cormorant', serif;
-  color: #111;
   -webkit-font-smoothing: antialiased;
 }
 
 /* HEADER */
 header {
-  border-bottom: 1px solid #d8d8d8;
-  max-width: 680px;
-  margin: 60px auto 40px;
-  padding: 0 20px;
-}
-
-.hello {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 8px;
+  position: relative;
+  padding: 28px 20px 16px;
+  text-align: center;
 }
 
 .brand {
-  font-size: 38px;
+  font-size: 34px;
   font-weight: 600;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+/* SETTINGS BUTTON */
+.settings-btn {
+  position: absolute;
+  right: 20px;
+  top: 28px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* SETTINGS PANEL */
+.settings {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s ease;
+  background: var(--bg);
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.settings.open {
+  max-height: 200px;
+}
+
+.settings-inner {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.settings button {
+  padding: 10px 14px;
+  font-family: inherit;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: transparent;
+  cursor: pointer;
+  color: var(--text);
 }
 
 /* SEARCH */
 .search {
-  max-width: 680px;
-  margin: 0 auto 60px;
+  max-width: 700px;
+  margin: 28px auto;
   padding: 0 20px;
 }
 
 .search input {
   width: 100%;
+  padding: 14px 16px;
   font-family: inherit;
   font-size: 16px;
-  padding: 12px 0;
   border: none;
-  border-bottom: 1px solid #ccc;
-  background: transparent;
   outline: none;
+  background: var(--card);
 }
 
-/* ARTICLE LIST */
+/* ARTICLES */
 main {
-  max-width: 680px;
+  max-width: 700px;
   margin: auto;
-  padding: 0 20px 120px;
+  padding: 0 20px 60px;
 }
 
 .article {
-  margin-bottom: 80px;
+  margin-bottom: 48px;
   cursor: pointer;
 }
 
 .article img {
   width: 100%;
-  display: block;
-  margin-bottom: 18px;
+  height: auto;
+  margin-bottom: 14px;
 }
 
 .meta {
   font-size: 13px;
-  color: #666;
-  margin-bottom: 6px;
+  color: var(--muted);
 }
 
 .title {
   font-size: 30px;
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 10px;
+  margin: 6px 0 10px;
 }
 
 .excerpt {
   font-size: 18px;
-  line-height: 1.6;
-  color: #333;
+  line-height: 1.65;
 }
 
 /* MODAL */
 .modal {
   position: fixed;
   inset: 0;
-  background: #f7f7f5;
-  z-index: 50;
+  background: var(--bg);
   opacity: 0;
   pointer-events: none;
   transition: opacity .35s ease;
@@ -113,22 +157,15 @@ main {
   pointer-events: auto;
 }
 
-.modal-inner {
-  max-width: 720px;
-  margin: 60px auto 120px;
-  padding: 0 20px;
-}
-
-.modal img {
-  width: 100%;
-  margin-bottom: 32px;
+.modal-content {
+  max-width: 700px;
+  margin: auto;
+  padding: 80px 20px;
 }
 
 .modal h1 {
-  font-size: 42px;
-  font-weight: 400;
-  line-height: 1.15;
-  margin-bottom: 24px;
+  font-size: 38px;
+  margin-bottom: 20px;
 }
 
 .modal p {
@@ -139,26 +176,13 @@ main {
 /* CLOSE */
 .close {
   position: fixed;
-  top: env(safe-area-inset-top, 20px);
+  top: 20px;
   right: 20px;
-  background: none;
   border: none;
-  font-size: 26px;
+  background: none;
+  font-size: 28px;
   cursor: pointer;
-  z-index: 100;
-  opacity: .6;
-  transition: opacity .2s ease;
-}
-
-.close:hover {
-  opacity: 1;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  .brand { font-size: 36px; }
-  .title { font-size: 26px; }
-  .modal h1 { font-size: 34px; }
+  color: var(--text);
 }
 </style>
 </head>
@@ -166,39 +190,56 @@ main {
 <body>
 
 <header>
-  <div class="hello" id="hello"></div>
   <div class="brand">john</div>
+  <button class="settings-btn" onclick="toggleSettings()">☼</button>
 </header>
 
+<div class="settings" id="settings">
+  <div class="settings-inner">
+    <button onclick="toggleTheme()">Light / Dark</button>
+    <button onclick="toggleLang()">EN / PT</button>
+  </div>
+</div>
+
 <div class="search">
-  <input type="text" placeholder="Search" id="searchInput">
+  <input type="text" placeholder="Search articles…" oninput="filterArticles(this.value)">
 </div>
 
 <main id="articles"></main>
 
 <div class="modal" id="modal">
-  <button class="close" id="closeBtn">✕</button>
-  <div class="modal-inner">
-    <img id="modalImage">
+  <button class="close" onclick="closeModal()">✕</button>
+  <div class="modal-content">
     <h1 id="modalTitle"></h1>
     <p id="modalText"></p>
   </div>
 </div>
 
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
+/* SETTINGS */
+function toggleSettings() {
+  document.getElementById('settings').classList.toggle('open');
 }
 
-/* NAME */
-let name = localStorage.getItem('name');
-if (!name) {
-  name = prompt('Your name') || 'friend';
-  localStorage.setItem('name', name);
+function toggleTheme() {
+  const theme = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute(
+    'data-theme',
+    theme === 'dark' ? 'light' : 'dark'
+  );
+  localStorage.setItem('theme', document.documentElement.getAttribute('data-theme'));
 }
-document.getElementById('hello').textContent = `Hello, ${name}`;
 
-/* DATA */
+(function(){
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+
+function toggleLang() {
+  alert('Language system ready. Content swap later.');
+}
+
+/* ARTICLES */
 const articles = [
   {
     title: 'On Silence',
@@ -217,16 +258,11 @@ const articles = [
 ];
 
 const container = document.getElementById('articles');
-const modal = document.getElementById('modal');
-const modalImage = document.getElementById('modalImage');
-const modalTitle = document.getElementById('modalTitle');
-const modalText = document.getElementById('modalText');
 
-/* RENDER */
 function render(list) {
   container.innerHTML = '';
   list.forEach(a => {
-    const el = document.createElement('article');
+    const el = document.createElement('div');
     el.className = 'article';
     el.innerHTML = `
       <img src="${a.image}">
@@ -240,18 +276,16 @@ function render(list) {
 }
 render(articles);
 
-/* SEARCH */
-document.getElementById('searchInput').addEventListener('input', e => {
-  const q = e.target.value.toLowerCase();
+function filterArticles(q) {
+  q = q.toLowerCase();
   render(articles.filter(a =>
     a.title.toLowerCase().includes(q) ||
     a.excerpt.toLowerCase().includes(q)
   ));
-});
+}
 
 /* MODAL */
 function openModal(a) {
-  modalImage.src = a.image;
   modalTitle.textContent = a.title;
   modalText.textContent = a.content;
   modal.classList.add('show');
@@ -260,11 +294,6 @@ function openModal(a) {
 function closeModal() {
   modal.classList.remove('show');
 }
-
-document.getElementById('closeBtn').onclick = closeModal;
-modal.addEventListener('click', e => {
-  if (e.target === modal) closeModal();
-});
 </script>
 
 </body>
