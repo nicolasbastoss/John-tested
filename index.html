@@ -35,69 +35,67 @@ body {
 }
 
 /* HEADER */
-
-
-/* SETTINGS BUTTON */
-/* HEADER */
 header {
   position: sticky;
   top: 0;
+  z-index: 10;
   background: var(--bg);
-  z-index: 5;
-  padding: 14px 20px 8px;
+  padding: 12px 20px 6px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .brand {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 600;
-  letter-spacing: 2.5px;
+  letter-spacing: 3px;
   text-transform: uppercase;
 }
 
-/* MENU BUTTON */
 .menu-btn {
   position: absolute;
   right: 20px;
+  top: 12px;
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
   color: var(--text);
-  line-height: 1;
+  opacity: 0.75;
 }
 
-/* SETTINGS PANEL */
+.menu-btn:hover { opacity: 1; }
+
+/* SETTINGS */
 .settings {
   max-height: 0;
+  opacity: 0;
   overflow: hidden;
   transition: max-height .35s ease, opacity .25s ease;
-  opacity: 0;
   background: var(--bg);
 }
 
 .settings.open {
-  max-height: 140px;
+  max-height: 120px;
   opacity: 1;
 }
 
 .settings-inner {
   max-width: 700px;
   margin: auto;
-  padding: 14px 20px 18px;
+  padding: 10px 20px 16px;
   display: flex;
-  gap: 16px;
+  gap: 14px;
   justify-content: flex-end;
 }
 
 .settings button {
   font-family: inherit;
-  font-size: 14px;
-  padding: 8px 12px;
+  font-size: 13px;
+  padding: 6px 10px;
   background: none;
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.2);
   color: var(--text);
   cursor: pointer;
 }
@@ -127,13 +125,12 @@ main {
 }
 
 .article {
-  margin-bottom: 48px;
+  margin-bottom: 52px;
   cursor: pointer;
 }
 
 .article img {
   width: 100%;
-  height: auto;
   margin-bottom: 14px;
 }
 
@@ -152,15 +149,15 @@ main {
   line-height: 1.65;
 }
 
-/* MODAL */
+/* MODAL OVERLAY */
 .modal {
   position: fixed;
   inset: 0;
   background: var(--bg);
   opacity: 0;
   pointer-events: none;
-  transition: opacity .35s ease;
-  overflow-y: auto;
+  transition: opacity .4s ease;
+  z-index: 20;
 }
 
 .modal.show {
@@ -171,12 +168,12 @@ main {
 .modal-content {
   max-width: 700px;
   margin: auto;
-  padding: 80px 20px;
+  padding: 100px 20px 80px;
 }
 
 .modal h1 {
   font-size: 38px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .modal p {
@@ -184,16 +181,17 @@ main {
   line-height: 1.75;
 }
 
-/* CLOSE */
+/* CLOSE BUTTON */
 .close {
   position: fixed;
-  top: 20px;
+  top: 16px;
   right: 20px;
   border: none;
   background: none;
-  font-size: 28px;
+  font-size: 26px;
   cursor: pointer;
   color: var(--text);
+  z-index: 30;
 }
 </style>
 </head>
@@ -202,9 +200,7 @@ main {
 
 <header>
   <div class="brand">john</div>
-  <button class="menu-btn" onclick="toggleSettings()" aria-label="Settings">
-    ⋮
-  </button>
+  <button class="menu-btn" onclick="toggleSettings()">⋮</button>
 </header>
 
 <div class="settings" id="settings">
@@ -215,7 +211,7 @@ main {
 </div>
 
 <div class="search">
-  <input type="text" placeholder="Search articles…" oninput="filterArticles(this.value)">
+  <input type="text" id="searchInput" placeholder="Search articles…" oninput="filterArticles(this.value)">
 </div>
 
 <main id="articles"></main>
@@ -229,18 +225,19 @@ main {
 </div>
 
 <script>
+/* STATE */
+let lang = localStorage.getItem('lang') || 'en';
+
 /* SETTINGS */
 function toggleSettings() {
   document.getElementById('settings').classList.toggle('open');
 }
 
 function toggleTheme() {
-  const theme = document.documentElement.getAttribute('data-theme');
-  document.documentElement.setAttribute(
-    'data-theme',
-    theme === 'dark' ? 'light' : 'dark'
-  );
-  localStorage.setItem('theme', document.documentElement.getAttribute('data-theme'));
+  const t = document.documentElement.getAttribute('data-theme');
+  const next = t === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
 }
 
 (function(){
@@ -249,24 +246,40 @@ function toggleTheme() {
 })();
 
 function toggleLang() {
-  alert('Language system ready. Content swap later.');
+  lang = lang === 'en' ? 'pt' : 'en';
+  localStorage.setItem('lang', lang);
+  render(articles);
 }
 
 /* ARTICLES */
 const articles = [
   {
-    title: 'On Silence',
+    en: {
+      title: 'On Silence',
+      excerpt: 'Silence is not absence.',
+      content: 'Silence is where clarity forms without noise.'
+    },
+    pt: {
+      title: 'Sobre o Silêncio',
+      excerpt: 'Silêncio não é ausência.',
+      content: 'O silêncio é onde a clareza se forma sem ruído.'
+    },
     meta: 'Reflection · 2 min',
-    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee',
-    excerpt: 'Silence is not absence.',
-    content: 'Silence is where clarity forms without noise.'
+    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee'
   },
   {
-    title: 'Waiting Without Fear',
+    en: {
+      title: 'Waiting Without Fear',
+      excerpt: 'Waiting reshapes intention.',
+      content: 'Waiting is alignment, not punishment.'
+    },
+    pt: {
+      title: 'Esperar Sem Medo',
+      excerpt: 'Esperar remodela a intenção.',
+      content: 'Esperar é alinhamento, não punição.'
+    },
     meta: 'Faith · Perspective',
-    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470',
-    excerpt: 'Waiting reshapes intention.',
-    content: 'Waiting is alignment, not punishment.'
+    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'
   }
 ];
 
@@ -280,8 +293,8 @@ function render(list) {
     el.innerHTML = `
       <img src="${a.image}">
       <div class="meta">${a.meta}</div>
-      <div class="title">${a.title}</div>
-      <div class="excerpt">${a.excerpt}</div>
+      <div class="title">${a[lang].title}</div>
+      <div class="excerpt">${a[lang].excerpt}</div>
     `;
     el.onclick = () => openModal(a);
     container.appendChild(el);
@@ -292,15 +305,15 @@ render(articles);
 function filterArticles(q) {
   q = q.toLowerCase();
   render(articles.filter(a =>
-    a.title.toLowerCase().includes(q) ||
-    a.excerpt.toLowerCase().includes(q)
+    a[lang].title.toLowerCase().includes(q) ||
+    a[lang].excerpt.toLowerCase().includes(q)
   ));
 }
 
 /* MODAL */
 function openModal(a) {
-  modalTitle.textContent = a.title;
-  modalText.textContent = a.content;
+  modalTitle.textContent = a[lang].title;
+  modalText.textContent = a[lang].content;
   modal.classList.add('show');
 }
 
