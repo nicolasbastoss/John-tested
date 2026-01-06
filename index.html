@@ -14,6 +14,14 @@
   --bg: #f3f3f1;
   --text: #111;
   --muted: #666;
+  --border: rgba(0,0,0,.08);
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --text: #f2f2f2;
+  --muted: #aaa;
+  --border: rgba(255,255,255,.1);
 }
 
 * { box-sizing: border-box; }
@@ -30,12 +38,13 @@ body {
 header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   background: var(--bg);
-  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  padding: 18px 20px;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid rgba(0,0,0,.08);
+  align-items: center;
 }
 
 .brand {
@@ -43,6 +52,17 @@ header {
   letter-spacing: 3px;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.theme-toggle {
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text);
 }
 
 /* SEARCH */
@@ -59,7 +79,13 @@ header {
   font-size: 16px;
   border: none;
   background: #fff;
+  color: #000;
   outline: none;
+}
+
+[data-theme="dark"] .search input {
+  background: #1a1a1a;
+  color: #fff;
 }
 
 /* ARTICLES */
@@ -111,6 +137,7 @@ main {
   pointer-events: none;
   transition: opacity .35s ease;
   overflow-y: auto;
+  z-index: 30;
 }
 
 .modal.show {
@@ -140,16 +167,17 @@ main {
   line-height: 1.75;
 }
 
-/* CLOSE */
+/* CLOSE BUTTON */
 .close {
   position: fixed;
   top: 20px;
   left: 20px;
-  font-size: 22px;
+  z-index: 40;
   background: none;
   border: none;
+  font-size: 26px;
   cursor: pointer;
-  z-index: 20;
+  color: var(--text);
 }
 
 /* MOBILE */
@@ -164,6 +192,7 @@ main {
 
 <header>
   <div class="brand">john</div>
+  <button class="theme-toggle" onclick="toggleTheme()">Light / Dark</button>
 </header>
 
 <div class="search">
@@ -181,6 +210,20 @@ main {
 </div>
 
 <script>
+/* THEME */
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+(function(){
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+
+/* ARTICLES */
 const articles = [
   {
     title: 'On Silence',
@@ -235,6 +278,7 @@ function filterArticles(q) {
   ));
 }
 
+/* MODAL */
 function openModal(a) {
   modalTitle.textContent = a.title;
   modalText.textContent = a.content;
