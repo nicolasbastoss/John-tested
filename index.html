@@ -10,9 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -29,8 +27,8 @@ body {
   inset: 0;
   background: #eceded;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 10;
   animation: splashOut 2.4s ease forwards;
 }
@@ -42,10 +40,10 @@ body {
   animation: splashIn 1.2s ease forwards;
 }
 @keyframes splashIn {
-  to { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; }
 }
 @keyframes splashOut {
-  0%, 70% { opacity: 1; }
+  0%,70% { opacity: 1; }
   100% { opacity: 0; pointer-events: none; }
 }
 
@@ -57,7 +55,6 @@ header {
 }
 .hello {
   font-size: 16px;
-  font-weight: 400;
   color: #666;
 }
 .brand {
@@ -77,11 +74,10 @@ header {
   padding: 18px 20px;
   border-radius: 18px;
   border: none;
-  font-family: 'Cormorant', serif;
+  font-family: inherit;
   font-size: 17px;
-  font-weight: 400;
-  outline: none;
   background: #fff;
+  outline: none;
   box-shadow: 0 14px 36px rgba(0,0,0,0.14);
 }
 
@@ -117,20 +113,18 @@ main {
 }
 .meta {
   font-size: 13px;
-  font-weight: 400;
   color: #777;
 }
 .title {
   font-size: 34px;
-  font-weight: 400;
   margin: 10px 0 14px;
 }
 .excerpt {
   font-size: 19px;
-  font-weight: 400;
   line-height: 1.7;
 }
 
+/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
@@ -142,16 +136,13 @@ main {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 .modal.show {
   opacity: 1;
   pointer-events: auto;
 }
-
 .modal.closing {
   opacity: 0;
 }
-
 .modal-image {
   height: 46vh;
   background-size: cover;
@@ -159,11 +150,9 @@ main {
   transform: scale(1.04);
   transition: transform .6s ease;
 }
-
 .modal.show .modal-image {
   transform: scale(1);
 }
-
 .modal-content {
   max-width: 720px;
   margin: auto;
@@ -172,25 +161,24 @@ main {
   transform: translateY(40px);
   transition: opacity .45s ease, transform .45s ease;
 }
-
 .modal.show .modal-content {
   opacity: 1;
   transform: translateY(0);
 }
-
 .modal.closing .modal-content {
   opacity: 0;
   transform: translateY(20px);
 }
 .modal-content h1 {
   font-size: 42px;
-  font-weight: 400;
+  margin-bottom: 16px;
 }
 .modal-content p {
   font-size: 20px;
   line-height: 1.75;
 }
 
+/* CLOSE */
 .close {
   position: fixed;
   top: env(safe-area-inset-top, 16px);
@@ -205,14 +193,12 @@ main {
   cursor: pointer;
   transition: transform .25s ease, background .25s ease, opacity .25s ease;
 }
-
-.close:hover {
-  background: rgba(0,0,0,0.8);
-}
-
 .close:active {
   transform: scale(0.9) rotate(-6deg);
   opacity: 0.8;
+}
+.modal.closing .close {
+  opacity: 0;
 }
 
 /* MOBILE */
@@ -227,9 +213,7 @@ main {
 
 <body>
 
-<div class="splash">
-  <h1>john</h1>
-</div>
+<div class="splash"><h1>john</h1></div>
 
 <header>
   <div class="hello" id="hello"></div>
@@ -237,13 +221,13 @@ main {
 </header>
 
 <div class="search">
-  <input type="text" placeholder="Search articles…" oninput="filterArticles(this.value)">
+  <input type="text" placeholder="Search articles…" id="searchInput">
 </div>
 
 <main id="articles"></main>
 
 <div class="modal" id="modal">
-  <button class="close" onclick="closeModal()">✕</button>
+  <button class="close" id="closeBtn">✕</button>
   <div class="modal-image" id="modalImage"></div>
   <div class="modal-content">
     <h1 id="modalTitle"></h1>
@@ -256,22 +240,16 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 
-
+/* NAME */
 let name = localStorage.getItem('name');
-
 if (!name || name === 'null' || name === 'undefined') {
   const input = prompt('Your name');
-  if (input && input.trim()) {
-    name = input.trim();
-    localStorage.setItem('name', name);
-  } else {
-    name = 'friend';
-  }
+  name = input && input.trim() ? input.trim() : 'friend';
+  localStorage.setItem('name', name);
 }
-
 document.getElementById('hello').textContent = `Hello, ${name}`;
 
-
+/* DATA */
 const articles = [
   {
     title: 'On Silence',
@@ -289,7 +267,16 @@ const articles = [
   }
 ];
 
+/* ELEMENTS */
 const container = document.getElementById('articles');
+const modal = document.getElementById('modal');
+const modalImage = document.getElementById('modalImage');
+const modalTitle = document.getElementById('modalTitle');
+const modalText = document.getElementById('modalText');
+const closeBtn = document.getElementById('closeBtn');
+const searchInput = document.getElementById('searchInput');
+
+/* OBSERVER */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -299,7 +286,7 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.15 });
 
-function renderArticles(list) {
+function render(list) {
   container.innerHTML = '';
   list.forEach(a => {
     const card = document.createElement('div');
@@ -310,50 +297,41 @@ function renderArticles(list) {
         <div class="meta">${a.meta}</div>
         <div class="title">${a.title}</div>
         <div class="excerpt">${a.excerpt}</div>
-      </div>
-    `;
+      </div>`;
     card.onclick = () => openModal(a);
     container.appendChild(card);
     observer.observe(card);
   });
 }
-renderArticles(articles);
+render(articles);
 
-function filterArticles(q) {
-  q = q.toLowerCase();
-  renderArticles(
-    articles.filter(a =>
-      a.title.toLowerCase().includes(q) ||
-      a.excerpt.toLowerCase().includes(q)
-    )
-  );
-}
+/* SEARCH */
+searchInput.addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  render(articles.filter(a =>
+    a.title.toLowerCase().includes(q) ||
+    a.excerpt.toLowerCase().includes(q)
+  ));
+});
 
+/* MODAL */
 function openModal(a) {
   modalImage.style.backgroundImage = `url('${a.image}')`;
   modalTitle.textContent = a.title;
   modalText.textContent = a.content;
-  modal.classList.add('show');
-}
-
-const modal = document.getElementById('modal');
-
-function openModal(a) {
-  modalImage.style.backgroundImage = `url('${a.image}')`;
-  modalTitle.textContent = a.title;
-  modalText.textContent = a.content;
-
   modal.classList.remove('closing');
   modal.classList.add('show');
 }
 
 function closeModal() {
   modal.classList.add('closing');
-
-  setTimeout(() => {
-    modal.classList.remove('show', 'closing');
-  }, 400);
+  setTimeout(() => modal.classList.remove('show','closing'), 400);
 }
+
+closeBtn.onclick = closeModal;
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
 </script>
 
 </body>
