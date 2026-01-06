@@ -131,38 +131,56 @@ main {
   line-height: 1.7;
 }
 
-/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
   background: #eceded;
   z-index: 20;
-  display: none;
   opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  transition: opacity .35s ease;
 }
+
 .modal.show {
-  display: block;
   opacity: 1;
+  pointer-events: auto;
 }
+
+.modal.closing {
+  opacity: 0;
+}
+
 .modal-image {
   height: 46vh;
   background-size: cover;
   background-position: center;
+  transform: scale(1.04);
+  transition: transform .6s ease;
 }
+
+.modal.show .modal-image {
+  transform: scale(1);
+}
+
 .modal-content {
   max-width: 720px;
   margin: auto;
   padding: 32px 22px 100px;
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity .5s ease, transform .5s ease;
+  transition: opacity .45s ease, transform .45s ease;
 }
+
 .modal.show .modal-content {
   opacity: 1;
   transform: translateY(0);
+}
+
+.modal.closing .modal-content {
+  opacity: 0;
+  transform: translateY(20px);
 }
 .modal-content h1 {
   font-size: 42px;
@@ -173,7 +191,6 @@ main {
   line-height: 1.75;
 }
 
-/* CLOSE */
 .close {
   position: fixed;
   top: env(safe-area-inset-top, 16px);
@@ -185,6 +202,17 @@ main {
   background: rgba(0,0,0,0.65);
   color: #fff;
   font-size: 24px;
+  cursor: pointer;
+  transition: transform .25s ease, background .25s ease, opacity .25s ease;
+}
+
+.close:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.close:active {
+  transform: scale(0.9) rotate(-6deg);
+  opacity: 0.8;
 }
 
 /* MOBILE */
@@ -308,8 +336,23 @@ function openModal(a) {
   modal.classList.add('show');
 }
 
+const modal = document.getElementById('modal');
+
+function openModal(a) {
+  modalImage.style.backgroundImage = `url('${a.image}')`;
+  modalTitle.textContent = a.title;
+  modalText.textContent = a.content;
+
+  modal.classList.remove('closing');
+  modal.classList.add('show');
+}
+
 function closeModal() {
-  modal.classList.remove('show');
+  modal.classList.add('closing');
+
+  setTimeout(() => {
+    modal.classList.remove('show', 'closing');
+  }, 400);
 }
 </script>
 
