@@ -463,6 +463,26 @@ function filterArticles(q){
     a.style.display = a.innerText.toLowerCase().includes(q) ? '' : 'none';
   });
 }
+  /* -------------------------
+   THEME WITH PERSISTENCE
+-------------------------- */
+const THEME_KEY = 'theme';
+
+// On load, apply saved theme
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme) {
+    document.documentElement.dataset.theme = savedTheme;
+  }
+});
+
+// Updated toggleTheme function
+function toggleTheme(){
+  const html = document.documentElement;
+  const newTheme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  html.dataset.theme = newTheme;
+  localStorage.setItem(THEME_KEY, newTheme); // <--- save it
+}
 </script>
 
 
