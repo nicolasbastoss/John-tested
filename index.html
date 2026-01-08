@@ -161,6 +161,9 @@ header{
   font-size:16px;
   font-family:inherit;
   outline:none;
+  outline:none;
+  color: var(--text);              /* <-- THIS */
+  caret-color: var(--text); 
 }
 
 /* ARTICLES */
@@ -296,6 +299,7 @@ main{
 /* -------------------------
    STATE
 -------------------------- */
+
 const SAVED_KEY = 'savedArticles';
 const READER_KEY = 'readerMode';
 
@@ -489,4 +493,3 @@ function toggleTheme(){
 
 </body>
 </html>
-
