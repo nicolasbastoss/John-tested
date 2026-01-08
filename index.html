@@ -166,6 +166,29 @@ header{
   caret-color: var(--text); 
 }
 
+.modal p {
+  margin-bottom: 2.5rem;
+}
+
+.modal-inner {
+  padding-bottom: 160px;
+}
+
+.modal {
+  overflow-y: auto;
+}
+
+.modal-inner {
+  padding-bottom: 160px;
+}
+
+#modalText {
+  white-space: pre-line;
+  line-height: 1.75;
+}
+
+
+
 /* ARTICLES */
 main{
   max-width:720px;
@@ -313,18 +336,78 @@ let showingSaved = false; // controla se estamos mostrando os salvos
 const data = [
   {
     id: '1',
-    title: 'On Silence',
-    excerpt: 'Silence is not empty. It is full of answers.',
-    body: 'Silence is not empty. It is full of answers. In a world built on noise, silence becomes resistance.',
-    img: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee'
+    title: 'Taming the Tongue.',
+    excerpt: 'A small instrument can redirect an entire life.',
+    
+    
+    body: `
+James 3:3–5 (NIV)
+
+When we put bits into the mouths of horses to make them obey us, we can turn the whole animal.
+Or take ships as an example. Although they are so large and are driven by strong winds, they are steered by a very small rudder wherever the pilot wants to go.
+Likewise, the tongue is a small part of the body, but it makes great boasts.
+Consider what a great forest is set on fire by a small spark.
+
+Believe it or not, our tongue is a very powerful tool. It has the ability to make people happier, to encourage them, to heal wounds, and to spread the word of God. It is a blessing. But as humans often do, we give our tongue another role. We use it carelessly. We let it wound, divide, humiliate, and destroy.
+A single sentence can undo years of trust. A careless joke can plant insecurity. A harsh word can echo far longer than we intended. Just like the spark James describes, what feels small in the moment can grow into something uncontrollable.
+
+The danger of the tongue is not only in lies or insults, but in impatience, gossip, pride, and silence when love demands speech. We excuse ourselves by saying “I didn’t mean it,” but intention does not cancel impact. The rudder still turns the ship, even if the pilot claims it was accidental.
+Taming the tongue is not about becoming quiet. It is about becoming intentional. It means choosing words that reflect Christ’s character rather than our momentary emotions. Jesus spoke with authority, but never without love.
+ He corrected, but He restored. 
+ He spoke truth, but He also knew when to remain silent.
+So today, pause before you speak. Ask whether your words build or burn, heal or harm, guide or mislead. Let your tongue be governed by grace, not impulse. A small instrument, when surrendered to God, can change the direction of an entire life.`,
+
+    img: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=80'
   },
+
   {
-    id: '2',
+  id: '2',
+  title: 'The God that makes Himself small',
+  excerpt: 'Let’s live in happiness, humility, and trust in Christ.',
+  body: `
+Philippians 2:5–8 (NIV)
+
+In your relationships with one another, have the same mindset as Christ Jesus:
+Who, being in very nature God, did not consider equality with God something to be used to his own advantage;
+rather, he made himself nothing by taking the very nature of a servant, being made in human likeness.
+And being found in appearance as a man, he humbled himself by becoming obedient to death —
+even death on a cross.
+
+Francisco de Assis gave up his wealth to serve the poor. Mother Teresa washed the wounds of the sick in Calcutta.
+These are great acts of humility, but none compare to the sacrifice of Christ, because His sacrifice comes from an entirely different nature.
+
+Jesus did not merely open His hands to comfort.
+He surrendered richness, glory, and status completely.
+In the Incarnation, the King of endless glory made Himself fragile.
+
+Every gesture of His life was marked by simplicity:
+washing the feet of His friends,
+touching those rejected with leprosy,
+entering Jerusalem riding on a donkey.
+
+Why would Jesus do this?
+
+Because humility is the clearest portrait of God’s love.
+Jesus entered the most broken realities of human life to reveal His sacrificial and loving character.
+
+He made Himself empty so that we could be made whole.
+This is His love for you.
+
+So today, instead of holding tightly to what you have,
+choose humility.
+Choose to follow the God who makes Himself small.
+Offer a generous gesture, a visit, or a listening ear.
+`,
+  img: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9'
+},
+  {
+    id: '3',
     title: 'The Weight of Morning',
     excerpt: 'Morning is not light. It is responsibility.',
     body: 'Morning carries weight. It demands intention before momentum takes over.',
     img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'
-  }
+  },
+
 ];
 
 /* -------------------------
